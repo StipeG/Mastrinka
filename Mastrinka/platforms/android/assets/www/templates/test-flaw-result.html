@@ -1,0 +1,69 @@
+﻿<ion-view>
+    <ion-nav-bar class="bar balanced" align-title="left">
+        <ion-nav-back-button class="button-clear" transitiontype="slide" direction="right" go-native>
+            <i class="icon-left ion-chevron-left"></i>
+        </ion-nav-back-button>
+        <ion-nav-title translate-once="TITLE_FLAW_RESULT">
+        </ion-nav-title>
+        <ion-nav-buttons side="right" class="buttons buttons-right header-item">
+            <span class="right-buttons">
+                <button class="button button-icon button-balanced button-clear ion-clipboard" ng-click="ShowModalFlaws();" style="color:#33cd5f;"></button>
+            </span>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content>
+        <div class="loader" ng-show="isInitial"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /></svg></div>
+        <div class="noi-content min-height100perc" ng-if="isError && !isInitial">
+            <div class="padTop30">
+                <i class="icon ion-bug noi-icon">
+                </i>
+                <h3 translate-once="TITLE_EROOR_HAS_OCCURED"></h3>
+                <p translate-once="MSG_TRY_AGAING_DATA"></p>
+                <div class="apply-container">
+                    <button class="button button-block button-calm" ng-click="Reload()" translate-once="BTN_TRY_AGAIN"></button>
+                </div>
+            </div>
+        </div>
+        <div class="noi-content-1 min-height100perc" ng-if="!isError && !isInitial">
+            <div class="padTop30">
+                <ion-list>
+                    <div class="item item-stable item-text-wrap" style="margin-bottom: 5px;">
+                        <span class="input-label" style="width:100%; font-size: 170%;" translate-once="TITLE_USER"></span>
+                        <span class="input-label" style="font-weight:bold; width:100%;"><span translate-once="MSG_PICKED_FLAW"></span>{{flaw.flaw_name}}</span>
+                        <div class="range range-balanced range-disabled">
+                            <input type="range" name="volume" min="0" max="1000" ng-model="flaw.flaw_intesity" disabled>
+                        </div>
+                        <span class="input-label center" style="font-weight:bold; width:100%; min-width:100%;"><span translate-once="LBL_INTESITY"></span> {{((flaw.flaw_intesity / 1000) * 100).toFixed(2)}} %</span>
+                    </div>
+                </ion-list>
+            </div>
+            <div class="padTop30">
+                <ion-list>
+                    <div class="item item-stable item-text-wrap" style="margin-bottom: 5px;">
+                        <span class="input-label" style="width:100%; font-size: 170%;" translate-once="TITLE_OFFICIAL_RATE"></span>
+                        <span class="input-label" style="font-weight:bold; width:100%;"><span translate-once="MSG_PICKED_FLAW"></span>Test</span>
+                        <div class="range range-balanced range-disabled">
+                            <input type="range" name="volume" min="0" max="1000" value="500" disabled>
+                        </div>
+                        <span class="input-label center" style="font-weight:bold; width:100%; min-width:100%;"><span translate-once="LBL_INTESITY"></span> {{((500 / 1000) * 100).toFixed(2)}} %</span>
+                    </div>
+                </ion-list>
+            </div>
+            <div class="padTop30">
+                <h4 class="padletfright15" translate-once="RESULT_FLAW_1"></h4>
+                <h4 class="padletfright15" translate-once="RESULT_FLAW_2"></h4>
+                <h4 class="padletfright15" translate-once="RESULT_FLAW_3"></h4>
+            </div>
+            <div class="margin-top20 margin-bottom-20">
+                <ion-grid>
+                    <div class="row">
+                        <div class="col"><button class="button button-raised button-balanced ink-dark" ng-click="ToThankYou();"><span translate-once="BTN_FINISH_RATE"></span><i class="icon ion-chevron-right margin-left10"></i></button></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><button class="button button-raised button-stable ink-dark" ng-click="goBack();"><i class="icon ion-ios-arrow-back margin-left10"></i><span class="margin-left5" translate-once="BTN_BACK_TO_RATE"></span> </button></div>
+                    </div>
+                </ion-grid>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

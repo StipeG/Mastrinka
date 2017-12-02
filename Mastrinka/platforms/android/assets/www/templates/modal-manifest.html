@@ -1,0 +1,16 @@
+﻿<ion-modal-view>
+    <ion-header-bar class="bar-assertive">
+        <div class="buttons buttons-left header-item" ng-click="CloseModalManifest()"> <span class="left-buttons"> <button class="button button-icon button-clear ion-chevron-left"> </button> </span> </div>
+        <div class="h1 title title-left light" translate-once="TITLE_PICK_MANIFEST"></div>
+    </ion-header-bar>
+    <ion-content has-header="true">
+        <ion-list>
+            <ion-radio name="group"
+                       ng-model="value.manifest"
+                       ng-repeat="item in data.manifest track by $index"
+                       ng-value="item.id"
+                       ng-change='newValueModalManifest()'
+                       icon="radio-icon ion-checkmark-round balanced"><span id="item{{item.id}}">{{ item.name }}</span></ion-radio>
+        </ion-list>
+    </ion-content>
+</ion-modal-view>

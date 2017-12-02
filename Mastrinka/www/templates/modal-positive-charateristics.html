@@ -1,0 +1,20 @@
+﻿<ion-modal-view>
+    <ion-header-bar class="bar-balanced">
+        <div class="buttons buttons-left header-item" ng-click="CloseModalPositive()"> <span class="left-buttons"> <button class="button button-icon button-clear ion-chevron-left"> </button> </span> </div>
+        <div class="h1 title title-left light" translate-once="TITLE_POSITIVE_CHARATERISTICS"></div>
+    </ion-header-bar>
+    <ion-content has-header="true">
+        <ion-list>
+            <div class="item item-divider" translate-once="TITLE_CHARATERISTICS_SMELLS">
+            </div>
+            <div class="item item-text-wrap" ng-repeat="item in smells track by $index">
+                <div style="font-weight:bold; width:100%;">{{ item.name }}</div>
+            </div>
+            <div class="item item-divider" translate-once="TITLE_CHARATERISTICS_TASTES">
+            </div>
+            <div class="item item-text-wrap" ng-repeat="item in tastes track by $index">
+                <div style="font-weight:bold; width:100%;">{{ item.name }}</div>
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-modal-view>

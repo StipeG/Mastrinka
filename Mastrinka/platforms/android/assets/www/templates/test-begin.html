@@ -1,0 +1,58 @@
+﻿<ion-view>
+    <ion-nav-bar class="bar balanced" align-title="left">
+        <ion-nav-back-button class="button-clear" transitiontype="slide" direction="right" go-native>
+            <i class="icon-left ion-chevron-left"></i>
+        </ion-nav-back-button>
+        <ion-nav-title translate-once="TITLE_FETCH_SAMPLE">
+        </ion-nav-title>
+    </ion-nav-bar>
+    <ion-content>
+        <div class="loader" ng-show="isInitial"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /></svg></div>
+        <div class="noi-content min-height100perc" ng-if="isError && !isInitial">
+            <div class="padTop30">
+                <i class="icon ion-bug noi-icon">
+                </i>
+                <h3 translate-once="TITLE_EROOR_HAS_OCCURED"></h3>
+                <p translate-once="MSG_TRY_AGAING_DATA"></p>
+                <div class="apply-container">
+                    <button class="button button-block button-calm" ng-click="Reload()" translate-once="BTN_TRY_AGAIN"></button>
+                </div>
+            </div>
+        </div>
+        <div class="noi-content-1 min-height100perc" ng-if="!isError && !isInitial">
+            <p class="padTop30" translate-once="MSG_START_TEST_PICK"></p>
+            <ion-list>
+                <label class="item item-icon-right item-stable item-text-wrap" style="margin-bottom: 5px;" ng-click="ShowModalManifest()" ng-if="data.manifest.length > 1">
+                    <span class="input-label has-input" style="font-weight:bold; width:100%;"><span translate-once="TITLE_MANIFEST"></span></span>
+                    <span>{{value.manifest_name}}</span>
+                    <i class="icon ion-chevron-right icon-accessory"></i>
+                </label>
+                <label class="item item-icon-right item-stable item-text-wrap" style="margin-bottom: 5px;" ng-click="ShowModalTable()" ng-show="value.manifest > 0">
+                    <span class="input-label has-input" style="font-weight:bold; width:100%;"><span translate-once="TITLE_GROUP_SAMPLES"></span></span>
+                    <span>{{value.table_name}}</span>
+                    <i class="icon ion-chevron-right icon-accessory"></i>
+                </label>
+                <label class="item item-icon-right item-stable item-text-wrap" style="margin-bottom: 5px;" ng-click="ShowModalSample()" ng-show="value.table > 0">
+                    <span class="input-label has-input" style="font-weight:bold; width:100%;"><span translate-once="TITLE_SAMPLE_ID"></span></span>
+                    <span>{{value.sample_name}}</span>
+                    <i class="icon ion-chevron-right icon-accessory"></i>
+                </label>
+            </ion-list>
+            <div class="margin-top20" ng-show="value.table > 0 && value.manifest > 0 && value.sample > 0 && is_read_instruction == false">
+                <ion-grid>
+                    <div class="row">
+                        <div class="col"><button class="button button-raised button-balanced ink-dark" ng-click="ShowModalTasteInstruction();"  style="float:right;"><span translate-once="BTN_NEXT"></span><i class="icon ion-chevron-right margin-left10"></i></button></div>
+                    </div>
+                </ion-grid>
+            </div>
+            <div class="margin-top20" ng-show="value.table > 0 && value.manifest > 0 && value.sample > 0 && is_read_instruction == true">
+                <ion-grid>
+                    <div class="row">
+                        <div class="col col-50"><button class="button button-raised button-stable ink-dark" ng-click="ShowModalTasteInstruction();" style="float:left;"><i class="icon ion-ios-information-outline"></i><span class="margin-left5" translate-once="TITLE_HOW_TO_TASTE"></span> </button></div>
+                        <div class="col col-50"><button class="button button-raised button-balanced ink-dark" ng-click="ToNextStep_1();" style="float:right;"><span translate-once="BTN_NEXT"></span><i class="icon ion-chevron-right margin-left10"></i></button></div>
+                    </div>
+                </ion-grid>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

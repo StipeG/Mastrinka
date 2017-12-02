@@ -1,0 +1,51 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "com.telerik.plugins.nativepagetransitions": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "cordova-plugin-globalization": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "cordova-plugin-nativestorage": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "io.cordova.myappf1a2ca"
+        },
+        "cordova-plugin-ionic-webview": {
+            "PACKAGE_NAME": "io.ionic.starter"
+        }
+    },
+    "dependent_plugins": {}
+}

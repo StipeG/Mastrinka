@@ -1,0 +1,40 @@
+﻿<ion-view hide-nav-bar="true">
+    <ion-content delegate-handle="mainScroll" lazy-scroll>
+        <div class="loader" ng-show="isInitial"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /></svg></div>
+        <div class="noi-content min-height100perc" ng-if="isError && !isInitial">
+            <div class="padTop30">
+                <i class="icon ion-bug noi-icon">
+                </i>
+                <h3 translate-once="TITLE_EROOR_HAS_OCCURED"></h3>
+                <p translate-once="MSG_TRY_AGAING_DATA"></p>
+                <div class="apply-container">
+                    <button class="button button-block button-calm" ng-click="Reload()" translate-once="BTN_TRY_AGAIN"></button>
+                </div>
+            </div>
+        </div>
+        <div class="noi-content-1 min-height100perc" ng-if="!isError && !isInitial">
+            <div class="padTop30 padletfright15">
+                <h4 class="center" translate-once="TITLE_TASTE_INSTRUCTIONS"></h4>
+                <p translate-once="MSG_TASTE_INSTRUCTIONS_1"></p>
+                <p translate-once="MSG_TASTE_INSTRUCTIONS_2"></p>
+            </div>
+            <ion-list>
+                <div class="item item-icon-left item-icon-right item-stable item-text-wrap" style="margin-bottom:5px;" ng-click="ShowModalTasteInstruction()">
+                    <i class="icon ion-clipboard"></i>
+                    <span style="font-weight: 600;"><span translate-once="TITLE_HOW_TO_TASTE"></span></span>
+                    <i class="icon ion-chevron-right icon-accessory"></i>
+                </div>
+                <div class="item item-icon-left item-icon-right item-stable item-text-wrap" style="margin-bottom:5px;" ng-click="ShowModalFlaws()">
+                    <i class="icon ion-clipboard"></i>
+                    <span style="font-weight: 600;"><span translate-once="TITLE_LIST_OF_CHARATERISTICS_FLAWS"></span></span>
+                    <i class="icon ion-chevron-right icon-accessory"></i>
+                </div>
+                <div class="item item-icon-left item-icon-right item-stable item-text-wrap" style="margin-bottom:5px;" ng-click="ShowModalPositive()">
+                    <i class="icon ion-clipboard"></i>
+                    <span style="font-weight: 600;"><span translate-once="TITLE_LIST_OF_POSITIVE_CHARATERISTICS"></span></span>
+                    <i class="icon ion-chevron-right icon-accessory"></i>
+                </div>
+            </ion-list>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,31 @@
+﻿<ion-view hide-nav-bar="true">
+    <ion-content delegate-handle="mainScroll" lazy-scroll>
+        <div class="loader" ng-if="isInitial"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /></svg></div>
+        <div ng-show="!isInitial" style="margin:0px;">
+
+            <div class="noi-content-1 min-height100perc margin-top20">
+                <img class="noi-image" src="img/Mastrinka.png" />
+                <h2 translate-once="TITLE_Mastrinka"></h2>
+                <h3 style="color:black;" translate-once="TITLE_mOlivo"></h3>
+                <p translate-once="TITLE_APP_FOR_OLIVE_OIL"></p>
+                <div class="margin-top50">
+                    <span translate-once="MSG_APP_WELCOME_MOLIVIO"></span>
+                    <div class="margin-top20">
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col col-12><button class="button button-raised button-balanced ink-dark" ng-click="startTesting();"><span translate-once="MSG_START_TESTING"></span><i class="icon ion-chevron-right margin-left10"></i></button></ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </div>
+                    <div class="margin-top15">
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col col-12><button class="button button-small button-raised button-stable ink-dark" ng-click="toHelp();"><i class="icon ion-ios-information-outline"></i><span class="margin-left5" translate-once="TITLE_HELP"></span> </button></ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

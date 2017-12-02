@@ -1,0 +1,16 @@
+﻿<ion-modal-view>
+    <ion-header-bar class="bar-assertive">
+        <div class="buttons buttons-left header-item" ng-click="CloseModalSample()"> <span class="left-buttons"> <button class="button button-icon button-clear ion-chevron-left"> </button> </span> </div>
+        <div class="h1 title title-left light" translate-once="TITLE_PICK_SAMPLE_ID"></div>
+    </ion-header-bar>
+    <ion-content has-header="true">
+        <ion-list>
+            <ion-radio name="group"
+                       ng-model="value.sample"
+                       ng-repeat="item in value.samples track by $index"
+                       ng-value="item.id"
+                       ng-change='newValueModalSample()'
+                       icon="radio-icon ion-checkmark-round balanced"><span id="item{{item.id}}">{{ item.name }}</span></ion-radio>
+        </ion-list>
+    </ion-content>
+</ion-modal-view>

@@ -1,0 +1,16 @@
+﻿<ion-modal-view>
+    <ion-header-bar class="bar-assertive">
+        <div class="buttons buttons-left header-item" ng-click="CloseModalTable()"> <span class="left-buttons"> <button class="button button-icon button-clear ion-chevron-left"> </button> </span> </div>
+        <div class="h1 title title-left light" translate-once="TITLE_PICK_GROUP_SAMPLES"></div>
+    </ion-header-bar>
+    <ion-content has-header="true">
+        <ion-list>
+            <ion-radio name="group"
+                       ng-model="value.table"
+                       ng-repeat="item in value.tables track by $index"
+                       ng-value="item.id"
+                       ng-change='newValueModalTable()'
+                       icon="radio-icon ion-checkmark-round balanced"><span id="item{{item.id}}">{{ item.name }}</span></ion-radio>
+        </ion-list>
+    </ion-content>
+</ion-modal-view>

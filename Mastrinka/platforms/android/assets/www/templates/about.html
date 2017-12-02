@@ -1,0 +1,35 @@
+﻿<ion-view hide-nav-bar="true">
+    <ion-content delegate-handle="mainScroll" lazy-scroll>
+        <div class="loader" ng-if="isInitial"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /></svg></div>
+        <div ng-show="!isInitial">
+            <div class="list card">
+                <div class="item item-body">
+                    <img class="full-image" src="img/Mastrinka.png">
+                    <h2 translate-once="TITLE_Mastrinka" style="font-size: 190%;"></h2>
+                    <p translate-once="MSG_ABOUT_MASTRINKA"></p>
+                    <p class="center"><a href="#" onclick="window.open('http://www.mastrinka.hr', '_system', 'location=yes'); return false;">www.mastrinka.hr</a></p>
+                </div>
+                <div class="item item-body">
+                    <h2 style="font-size: 190%;" translate-once="TITLE_KRS"></h2>
+                    <p translate-once="MSG_ABOUT_KRS"></p>
+                    <p class="center"><a href="#" onclick="window.open('http://krs.hr/', '_system', 'location=yes'); return false;">www.krs.hr</a></p>
+                </div>
+                <div class="item item-body">
+                    <h2 style="font-size: 190%;margin-bottom: 0px;" translate-once="TITLE_SPONSORS"></h2>
+                    <div class="row">
+                        <div class="col col-50">
+                            <h3 translate-once="TITLE_SPLIT_AIRPORT" class="center" style="margin-bottom: 3px;margin-top: 3px;"></h3>
+                            <div class="center"><a href="#" onclick="window.open('http://www.split-airport.hr', '_system', 'location=yes'); return false;">www.split-airport.hr</a></div>
+                        </div>
+                        <div class="col col-50">
+                            <h3 translate-once="TITLE_APARTMENTS_MARINA" class="center" style="margin-bottom: 3px;margin-top: 3px;"></h3>
+                            <div class="center"><a href="#" onclick="window.open('http://www.apartmani-marina.hr/', '_system', 'location=yes'); return false;">www.apartmani-marina.hr</a></div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

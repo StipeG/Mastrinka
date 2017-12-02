@@ -1,0 +1,63 @@
+﻿<ion-view>
+    <ion-nav-bar class="bar balanced" align-title="left">
+        <ion-nav-back-button class="button-clear" transitiontype="slide" direction="right" go-native>
+            <i class="icon-left ion-chevron-left"></i>
+        </ion-nav-back-button>
+        <ion-nav-title translate-once="TITLE_FLAW">
+        </ion-nav-title>
+    </ion-nav-bar>
+    <ion-content>
+        <div class="loader" ng-show="isInitial"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /></svg></div>
+        <div class="noi-content min-height100perc" ng-if="isError && !isInitial">
+            <div class="padTop30">
+                <i class="icon ion-bug noi-icon">
+                </i>
+                <h3 translate-once="TITLE_EROOR_HAS_OCCURED"></h3>
+                <p translate-once="MSG_TRY_AGAING_DATA"></p>
+                <div class="apply-container">
+                    <button class="button button-block button-calm" ng-click="Reload()" translate-once="BTN_TRY_AGAIN"></button>
+                </div>
+            </div>
+        </div>
+        <div class="noi-content-1 min-height100perc" ng-if="!isError && !isInitial">
+            <h3 class="padTop30" translate-once="MSG_FLAW_UPPER"></h3>
+            <ion-grid>
+                <div class="row">
+                    <div class="col col-50"><button class="button button-large" ng-class="ac_1" ng-click="YESClicked();"><span translate-once="BTN_YES"></span><i class="icon ion-checkmark-round margin-left5" ng-show="yes_active == true"></i></button></div>
+                    <div class="col col-50"><button class="button button-large" ng-class="ac_2" ng-click="NOClicked();"><span translate-once="BTN_NO"></span><i class="icon ion-checkmark-round margin-left5" ng-show="no_active == true"></i></button></div>
+                </div>
+            </ion-grid>
+            <div class="margin-top20" ng-show="no_active == true">
+                <ion-grid>
+                    <div class="row">
+                        <div class="col"><button class="button button-raised button-balanced ink-dark" ng-click="ToNextStep_1();" style="float:right;"><span translate-once="BTN_NEXT"></span><i class="icon ion-chevron-right margin-left10"></i></button></div>
+                    </div>
+                </ion-grid>
+            </div>
+            <div ng-show="yes_active == true">
+                <ion-list>
+                    <label class="item item-icon-right item-stable item-text-wrap" style="margin-bottom: 5px;" ng-click="ShowModalFlaws()">
+                        <span class="input-label has-input" style="font-weight:bold; width:100%;"><span translate-once="MSG_PICK_FLAW"></span></span>
+                        <span>{{value.flaw_name}}</span>
+                        <i class="icon ion-chevron-right icon-accessory"></i>
+                    </label>
+                    <div class="item item-stable item-text-wrap" style="margin-bottom: 5px;" ng-show="value.flaw > 0">
+                        <span class="input-label" style="font-weight:bold; width:100%;"><span translate-once="MSG_FLAW_INTESITY"></span><span>{{value.flaw_name}}</span></span>
+                        <div class="range">
+                            <i class="icon ion-minus-round"></i>
+                            <input type="range" name="volume" min="0" max="1000" ng-model="value.flaw_intesity">
+                            <i class="icon ion-plus-round"></i>
+                        </div>
+                    </div>
+                </ion-list>
+                <div class="margin-top20" ng-show="value.flaw > 0 && value.flaw_intesity > 0">
+                    <ion-grid>
+                        <div class="row">
+                            <div class="col"><button class="button button-raised button-balanced ink-dark" ng-click="ToFlawFinal();" style="float:right;"><span translate-once="BTN_NEXT"></span><i class="icon ion-chevron-right margin-left10"></i></button></div>
+                        </div>
+                    </ion-grid>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
