@@ -6,7 +6,7 @@
 var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'pascalprecht.translate', 'ngCordova', 'ion-floating-menu', 'ionic-material',
     'ngStorage', 'rzModule', 'ionic.native', 'ionicLazyLoad']);
 app.constant('config', {
-    url: 'https://happytovisit.com/SmartApp/SmartApp.asmx/'
+    url: 'http://174.138.64.37/api/'
 });
 app.run(function ($ionicPlatform, $window, $ionicModal, $rootScope, $translate, $animate, $state, $cordovaSplashscreen, $timeout,
     NativeStoragService, $translate) {

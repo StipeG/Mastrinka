@@ -92,7 +92,7 @@
     $scope.ShowModalPositive = function () {
         $scope.modalPositive.show();
     };
-    $scope.CloseModalPositiveionic = function () {
+    $scope.CloseModalPositive = function () {
         $scope.modalPositive.hide();
     };
 
@@ -175,25 +175,32 @@
         HTTPService.getManifastionAndSamlpes(
           function Success(data) {
 
-              $scope.data = data;
-              if ($scope.data.manifest.length == 1) {
-                  $scope.value.manifest = $scope.data.manifest[0].id;
-                  $scope.value.manifest_name = $scope.data.manifest[0].name;
-                  for (var i = 0; i < $scope.data.tables.length; i++) {
-                      if ($scope.data.tables[i].manifestation.id == $scope.value.manifest)
-                          $scope.value.tables.push($scope.data.tables[i]);
-                  }
+              $scope.data = CreateFromManifestItemsFromServer(data.data["1"]);
+              if ($scope.data == null || $scope.data.length <= 0)
+              {
+                  $scope.isInitial = false;
+                  $scope.isError = true;
               }
+              else {
+                  if ($scope.data.manifest.length == 1) {
+                      $scope.value.manifest = $scope.data.manifest[0].id;
+                      $scope.value.manifest_name = $scope.data.manifest[0].name;
+                      for (var i = 0; i < $scope.data.tables.length; i++) {
+                          if ($scope.data.tables[i].manifestation.id == $scope.value.manifest)
+                              $scope.value.tables.push($scope.data.tables[i]);
+                      }
+                  }
 
-              $scope.isError = false;
-              $scope.isInitial = false;
+                  $scope.isError = false;
+                  $scope.isInitial = false;
+              }
           },
            function Error(data) {
                $scope.isInitial = false;
                $scope.isError = true;
 
            },
-            config.url + 'ClientDashboard'
+            config.url + 'manifestation/full'
           );
     };
 
@@ -281,26 +288,40 @@
         $ionicLoading.show({
             template: '<div class="loader"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div>'
         });
+        var sample = {
+            manfiest_id: $scope.value.manifest, manifest_name: $scope.value.manifest_name, table_id: $scope.value.table, table_name: $scope.value.table_name,
+            sample_id: $scope.value.sample, sample_name: $scope.value.sample_name,
+            data: null
+        };
         HTTPService.getSampleData(
         function Success(data) {
             
-            NativeStoragService.setItem("sample", data).then(function (value) {
-                $ionicLoading.hide();
-                $state.go('test-flaw');
-                window.plugins.nativepagetransitions.slide(
-                { "direction": "left" },
-                function (msg) { },
-                function (msg) { }
-                );
+            if (data.data) {
+                sample.data = data.data;
+                NativeStoragService.setItem("sample", sample).then(function (value) {
+                    $ionicLoading.hide();
+                    $state.go('test-flaw');
+                    window.plugins.nativepagetransitions.slide(
+                    { "direction": "left" },
+                    function (msg) { },
+                    function (msg) { }
+                    );
 
-            }, function (error) {
+                }, function (error) {
+                    $ionicLoading.hide();
+                    $scope.isInitial = false;
+                    $scope.isError = true;
+                });
+            } else {
+                $ionicLoading.hide();
                 $scope.isInitial = false;
                 $scope.isError = true;
-            });
+            }
 
 
-            $scope.isError = false;
-            $scope.isInitial = false;
+
+            //$scope.isError = false;
+            //$scope.isInitial = false;
         },
         function Error(data) {
             $ionicLoading.hide();
@@ -308,7 +329,7 @@
             $scope.isError = true;
 
         },
-        config.url + 'ClientDashboard', $scope.value.manifest, $scope.value.manifest_name, $scope.value.table, $scope.value.table_name, $scope.value.sample, $scope.value.sample_name
+        config.url + 'sample-testing/only-official/' + $scope.value.sample, $scope.value.manifest, $scope.value.manifest_name, $scope.value.table, $scope.value.table_name, $scope.value.sample, $scope.value.sample_name
         );
     };
 
@@ -435,7 +456,7 @@
             template: '<div class="loader"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div>'
         });
 
-        NativeStoragService.setItem("flaw", {
+        NativeStoragService.setFlaw({
             flaw_id: $scope.value.flaw, flaw_name: $scope.value.flaw_name,
             flaw_description: $scope.value.flaw_desc, flaw_intesity: $scope.value.flaw_intesity
         }).then(function (value) {
@@ -504,7 +525,34 @@
 
                 NativeStoragService.getItem("sample").then(function (value) {
                     $scope.sample = value;
-                    if ($scope.sample) {
+                    if ($scope.sample && $scope.sample.data) {
+                        $scope.server_flaw = { id: -1, name: "-", intesity: 0, status: -1 };
+                        if ($scope.sample.data.FlawId && $scope.sample.data.FlawId > 0)
+                        {
+                            var selectedFlaw = null;
+                            for (var i = 0; i < $scope.flaws.length; i++)
+                            {
+                                if ($scope.flaws[i].id == $scope.sample.data.FlawId)
+                                {
+                                    selectedFlaw = $scope.flaws[i];
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        
+                        if (selectedFlaw != null) {
+                            if ($scope.sample.data.FlawIntensity > 0)
+                                $scope.server_flaw.intesity = $scope.sample.data.FlawIntensity;
+                            $scope.server_flaw.name = selectedFlaw.name;
+                            
+                        }
+                        if (selectedFlaw != null && selectedFlaw.id != $scope.flaw.flaw_id)
+                            $scope.server_flaw.status = 0;
+                        else if (selectedFlaw == null)
+                            $scope.server_flaw.status = 1;
+                        else if (selectedFlaw != null && selectedFlaw.id == $scope.flaw.flaw_id)
+                            $scope.server_flaw.status = 2;
 
                         $scope.isInitial = false;
                         $scope.isError = false;
@@ -695,7 +743,7 @@
             template: '<div class="loader"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div>'
         });
 
-        NativeStoragService.setItem("rate_result", {
+        NativeStoragService.setRateResults({
             is_mature: $scope.value.is_mature, smell: $scope.value.smell, smell_name: $scope.value.smell_name, smell_description: $scope.value.smell_description, smell_intesity: $scope.value.smell_intesity,
             taste: $scope.value.taste, taste_name: $scope.value.taste_name, taste_description: $scope.value.taste_description, taste_bitter_intesity: $scope.value.taste_bitter_intesity, taste_spicy_intesity: $scope.value.taste_spicy_intesity,
             general_rate_intesity: $scope.value.general_rate_intesity
@@ -844,11 +892,16 @@
         $scope.is_populate_thanks = false;
         NativeStoragService.getItem("is_populate_thanks").then(function (value) {
             $scope.is_populate_thanks = value;
-            $scope.InitalDone();
+            NativeStoragService.getFlawAndRateAndSample().then(function (value1) {
+                $scope.flaw_rate_result = value1;
+                $scope.InitalDone();
+            }, function (error) {
+                $scope.InitalDone();
+            });
+            
         }, function (error) {
             $scope.InitalDone();
         });
-
 
 
 
@@ -880,30 +933,49 @@
             template: '<div class="loader"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div>'
         });
 
-
-
         HTTPService.sentRate(
           function Success(data) {
 
-              NativeStoragService.setItem("is_populate_thanks", true).then(function (value) {
-                  $ionicLoading.hide();
-                  $state.go('tab.main');
-                  window.plugins.nativepagetransitions.slide(
-                  { "direction": "left" },
-                  function (msg) { },
-                  function (msg) { }
-                  );
+              NativeStoragService.setFlawAndRateToNull().then(function (value1) {
+                  NativeStoragService.setItem("is_populate_thanks", true).then(function (value) {
+                      $ionicLoading.hide();
+                      $state.go('tab.main');
+                      window.plugins.nativepagetransitions.slide(
+                      { "direction": "left" },
+                      function (msg) { },
+                      function (msg) { }
+                      );
+
+                  }, function (error) {
+                      $ionicLoading.hide();
+                      $state.go('tab.main');
+                      window.plugins.nativepagetransitions.slide(
+                      { "direction": "left" },
+                      function (msg) { },
+                      function (msg) { }
+                      );
+                  });
 
               }, function (error) {
-                  $ionicLoading.hide();
-                  $state.go('tab.main');
-                  window.plugins.nativepagetransitions.slide(
-                  { "direction": "left" },
-                  function (msg) { },
-                  function (msg) { }
-                  );
+                  NativeStoragService.setItem("is_populate_thanks", true).then(function (value) {
+                      $ionicLoading.hide();
+                      $state.go('tab.main');
+                      window.plugins.nativepagetransitions.slide(
+                      { "direction": "left" },
+                      function (msg) { },
+                      function (msg) { }
+                      );
+
+                  }, function (error) {
+                      $ionicLoading.hide();
+                      $state.go('tab.main');
+                      window.plugins.nativepagetransitions.slide(
+                      { "direction": "left" },
+                      function (msg) { },
+                      function (msg) { }
+                      );
+                  });
               });
-              
           },
            function Error(data) {
                $ionicLoading.hide();
@@ -914,7 +986,7 @@
                function (msg) { }
                );
            },
-            config.url + 'ClientDashboard', $scope.value.usefull, $scope.value.intiutive, $scope.value.detail
+            config.url + 'sample-testing/save-user-rating', $scope.value.usefull, $scope.value.intiutive, $scope.value.detail, $scope.flaw_rate_result
         );
     };
 

@@ -41,18 +41,18 @@
                 <ion-list>
                     <div class="item item-stable item-text-wrap" style="margin-bottom: 5px;">
                         <span class="input-label" style="width:100%; font-size: 170%;" translate-once="TITLE_OFFICIAL_RATE"></span>
-                        <span class="input-label" style="font-weight:bold; width:100%;"><span translate-once="MSG_PICKED_FLAW"></span>Test</span>
+                        <span class="input-label" style="font-weight:bold; width:100%;"><span translate-once="MSG_PICKED_FLAW"></span>{{server_flaw.name}}</span>
                         <div class="range range-balanced range-disabled">
-                            <input type="range" name="volume" min="0" max="1000" value="500" disabled>
+                            <input type="range" name="volume" min="0" max="1000" ng-model="server_flaw.intesity" disabled>
                         </div>
-                        <span class="input-label center" style="font-weight:bold; width:100%; min-width:100%;"><span translate-once="LBL_INTESITY"></span> {{((500 / 1000) * 100).toFixed(2)}} %</span>
+                        <span class="input-label center" style="font-weight:bold; width:100%; min-width:100%;"><span translate-once="LBL_INTESITY"></span> {{((server_flaw.intesity / 1000) * 100).toFixed(2)}} %</span>
                     </div>
                 </ion-list>
             </div>
             <div class="padTop30">
-                <h4 class="padletfright15" translate-once="RESULT_FLAW_1"></h4>
-                <h4 class="padletfright15" translate-once="RESULT_FLAW_2"></h4>
-                <h4 class="padletfright15" translate-once="RESULT_FLAW_3"></h4>
+                <h4 class="padletfright15" translate-once="RESULT_FLAW_1" ng-if="server_flaw.status == 0"></h4>
+                <h4 class="padletfright15" translate-once="RESULT_FLAW_2" ng-if="server_flaw.status == 1"></h4>
+                <h4 class="padletfright15" translate-once="RESULT_FLAW_3" ng-if="server_flaw.status == 2"></h4>
             </div>
             <div class="margin-top20 margin-bottom-20">
                 <ion-grid>

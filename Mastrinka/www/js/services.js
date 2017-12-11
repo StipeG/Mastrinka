@@ -4,106 +4,77 @@
 
     return {
 
-
-
         getManifastionAndSamlpes: function (handleSuccess, handleError, url) {
-            var deferred = $q.defer();
 
-            setTimeout(function () {
-                deferred.resolve(PopulateForTestTables());
-                
-            }, 1000);
-            return deferred.promise.then(handleSuccess, handleError);
-            /*
-            ovo ce ic kad se napravi
+
             return $http.get(url,
             {
-                timeout: deferred.promise,
                 method: 'POST',
                 dataType: "json",
-                params: { 'signature': signature, 'public_key': publickey, 'search': search, 'translation': translation },
                 headers: {
                     "Content-Type": 'application/json; charset=UTF-8'
                 },
             }
-            ).then(handleSuccess, handleError);*/
+            ).then(handleSuccess, handleError);
         },
         getSampleData: function (handleSuccess, handleError, url, manfiest_id, manifest_name, table_id, table_name, sample_id, sample_name) {
-            var deferred = $q.defer();
-
-            setTimeout(function () {
-                deferred.resolve({
-                    manfiest_id: manfiest_id, manifest_name: manifest_name, table_id: table_id, table_name: table_name, sample_id: sample_id, sample_name: sample_name,
-                    data: null});
-                
-            }, 1000);
-            return deferred.promise.then(handleSuccess, handleError);
-            /*
-            ovo ce ic kad se napravi
             return $http.get(url,
             {
-                timeout: deferred.promise,
                 method: 'POST',
                 dataType: "json",
-                params: { 'signature': signature, 'public_key': publickey, 'search': search, 'translation': translation },
-                headers: {
-                    "Content-Type": 'application/json; charset=UTF-8'
-                },
-            }
-            ).then(handleSuccess, handleError);*/
-        },
-        sentRate: function (handleSuccess, handleError, url, rate_usefull, rate_intiutive, rate_detail) {
-            var deferred = $q.defer();
-
-            setTimeout(function () {
-                deferred.resolve({
-                    ok: 'ok'
-                });
-
-            }, 1000);
-            return deferred.promise.then(handleSuccess, handleError);
-            /*
-            ovo ce ic kad se napravi
-            return $http.get(url,
-            {
-                timeout: deferred.promise,
-                method: 'POST',
-                dataType: "json",
-                params: { 'signature': signature, 'public_key': publickey, 'search': search, 'translation': translation },
-                headers: {
-                    "Content-Type": 'application/json; charset=UTF-8'
-                },
-            }
-            ).then(handleSuccess, handleError);*/
-        },
-
-        like: function (handleSuccess, handleError, signature, publickey, search, translation, url) {
-            var deferred = $q.defer();
-            return $http.get(url,
-            {
-                timeout: deferred.promise,
-                method: 'POST',
-                dataType: "json",
-                params: { 'signature': signature, 'public_key': publickey, 'search': search, 'translation': translation },
                 headers: {
                     "Content-Type": 'application/json; charset=UTF-8'
                 },
             }
             ).then(handleSuccess, handleError);
         },
-        all: function (handleSuccess, handleError, signature, publickey, latitude, longitude, translation, url) {
 
-            return $http.get(url,
-            {
-                method: 'POST',
-                dataType: "json",
-                params: { 'signature': signature, 'public_key': publickey, 'latitude': latitude, 'longitude': longitude, 'translation': translation },
-                headers: {
-                    "Content-Type": 'application/json; charset=UTF-8'
-                },
+        sentRate: function (handleSuccess, handleError, url, rate_usefull, rate_intiutive, detail, flaw_rate_result) {
+            var val = { };
+            
+            val = {
+                SampleId: -1, IsMature: false, OverallRating: -1, FlawId: -1, FlawIntensity: -1, TasteId: -1, TasteSpicyIntensity: -1, TasteBitterIntensity: -1,
+                SmellId: -1, SmellIntensity: -1, AppUsefull: -1, AppIntiutive: -1, AppDetail: -1
+            };
+
+            if (flaw_rate_result.sample && flaw_rate_result.sample != null)
+                val.SampleId = flaw_rate_result.sample.sample_id;
+            else
+                val.SampleId = 1;
+            if (flaw_rate_result.flaw != null) {
+                val.FlawId = flaw_rate_result.flaw.flaw_id;
+                val.FlawIntensity = flaw_rate_result.flaw.flaw_intesity;
             }
-            ).then(handleSuccess, handleError);
+            else {
+                val.IsMature = flaw_rate_result.rate_result.is_mature;
+                val.TasteId = flaw_rate_result.rate_result.taste;
+                val.TasteBitterIntensity = flaw_rate_result.rate_result.taste_bitter_intesity;
+                val.TasteSpicyIntensity = flaw_rate_result.rate_result.taste_spicy_intesity;
+                val.SmellId = flaw_rate_result.rate_result.smell;
+                val.SmellIntensity = flaw_rate_result.rate_result.smell_intesity;
+                val.OverallRating = flaw_rate_result.rate_result.general_rate_intesity;
+            }
+
+            val.AppDetail = detail;
+            val.AppIntiutive = rate_intiutive;
+            val.AppUsefull = rate_usefull;
+
+            
+            return $http.post("http://174.138.64.37/api/sample-testing/save-user-rating",
+            {
+                "data": {
+                    "SampleId": val.SampleId, "IsMature": val.IsMature, "OverallRating": val.OverallRating, "FlawId": val.FlawId, "FlawIntensity": val.FlawIntensity,
+                    "TasteId": val.TasteId, "TasteSpicyIntensity": val.TasteSpicyIntensity, "TasteBitterIntensity": val.TasteBitterIntensity,
+                    "SmellId": val.SmellId, "SmellIntensity": val.SmellIntensity, "AppUsefull": val.AppUsefull, "AppIntiutive": val.AppIntiutive, "AppDetail": val.AppDetail
+                }
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(handleSuccess, handleError);
+
         },
+
     };
 
 })
@@ -223,6 +194,138 @@
                         }
                     }
 
+                });
+            }
+            return q.promise;
+        },
+        getFlawAndRateAndSample: function () {
+            var q = $q.defer();
+            if (isInBrowser()) {
+                getFromLocalStorage("flaw", function (result1) {
+                    getFromLocalStorage("rate_result", function (result2) {
+                        getFromLocalStorage("sample", function (result3) {
+                            q.resolve({ flaw: result1, rate_result: result2, sample: result3 });
+                            },
+                            function (error) {
+                                q.reject(error);
+                            });
+                        },
+                        function (error) {
+                        q.reject(error);
+                    });
+                },
+                 function (error) {
+                        q.reject(error);
+            });
+            } else {
+                NativeStorage.getItem("flaw", function (result1)
+                {
+                    NativeStorage.getItem("rate_result", function (result2) {
+                        NativeStorage.getItem("rate_result", function (result3) {
+                            q.resolve({ flaw: result1, rate_result: result2, sample: result3 });
+                        },
+                        function (error) {
+                            q.reject(error);
+
+                        });
+                    },
+                    function (error) {
+                        q.reject(error);
+
+                    });
+                },
+                function (error) {
+                    q.reject(error);
+
+                });
+            }
+            return q.promise;
+        },
+        setFlawAndRateToNull: function () {
+            var q = $q.defer();
+            if (isInBrowser()) {
+                setInLocalStorage("flaw", null, function (result)
+                {
+                    setInLocalStorage("rate_result", null, function (result1) {
+                        q.resolve(result1);
+                    },
+                    function (error) {
+                        q.resolve(null);
+                    });
+                },
+                function (error) {
+                    q.resolve(null);
+                });
+            } else {
+                NativeStorage.setItem("flaw", null, function (result)
+                {
+                    NativeStorage.setItem("rate_result", null, function (result1) {
+                        q.resolve(result1);
+                    },
+                    function (error) {
+                        q.resolve(null);
+                    });
+                },
+                function (error) {
+                    q.resolve(null);
+                });
+            }
+            return q.promise;
+        },
+        setRateResults: function (s) {
+            var q = $q.defer();
+            if (isInBrowser()) {
+                setInLocalStorage("flaw", null, function (result) {
+                    setInLocalStorage("rate_result", s, function (result1) {
+                        q.resolve(result1);
+                    },
+                    function (error) {
+                        q.resolve(null);
+                    });
+                },
+                function (error) {
+                    q.resolve(null);
+                });
+            } else {
+                NativeStorage.setItem("flaw", null, function (result) {
+                    NativeStorage.setItem("rate_result", s, function (result1) {
+                        q.resolve(result1);
+                    },
+                    function (error) {
+                        q.resolve(null);
+                    });
+                },
+                function (error) {
+                    q.resolve(null);
+                });
+            }
+            return q.promise;
+        },
+        setFlaw: function (s) {
+            var q = $q.defer();
+            if (isInBrowser()) {
+                setInLocalStorage("rate_result", null, function (result) {
+                    setInLocalStorage("flaw", s, function (result1) {
+                        q.resolve(result1);
+                    },
+                    function (error) {
+                        q.resolve(null);
+                    });
+                },
+                function (error) {
+                    q.resolve(null);
+                });
+            } else {
+                NativeStorage.setItem("rate_result", null, function (result) {
+                    NativeStorage.setItem("flaw", s, function (result1) {
+                        q.resolve(result1);
+                    },
+                    function (error) {
+                        q.resolve(null);
+                    });
+                },
+                function (error) {
+                    q.resolve(null);
                 });
             }
             return q.promise;
