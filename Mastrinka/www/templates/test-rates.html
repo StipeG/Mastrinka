@@ -31,14 +31,15 @@
                     </div>
                 </div>
                 <div class="item item-icon-right item-stable item-text-wrap" style="padding-top:0px;" ng-click="ShowModalSmell()" ng-show="green_active == true || mature_active" >
-                    <span class="input-label has-input" style="font-weight:bold; width:100%;"><span translate-once="TITLE_PICK_SMELL"></span></span>
+                    <span class="input-label has-input" style="font-weight:bold; width:100%;"><span translate-once="TITLE_PICK_CHARATERISTICS"></span></span>
+                    <span>{{GetSmells()}}</span>
                     <i class="icon ion-chevron-right icon-accessory"></i>
                 </div>
-                <div class="item item-stable item-text-wrap" style="margin-bottom: 5px; padding-top:0px;" ng-show="(green_active == true || mature_active) && value.smell > 0">
-                    <span class="input-label" style="font-weight:bold; width:100%;"><span translate-once="LBL_SMELL_INTESITY"></span><span>{{value.smell_name}}</span></span>
+                <div class="item item-stable item-text-wrap" style="margin-bottom: 5px; padding-top:0px;" ng-show="(green_active == true || mature_active) && value.smell.length > 0">
+                    <span class="input-label" style="font-weight:bold; width:100%;"><span translate-once="LBL_FRUIT_INTESITY"></span></span>
                     <div class="range">
                         <i class="icon ion-minus-round"></i>
-                        <input type="range" name="volume" min="0" max="1000" ng-model="value.smell_intesity" ng-change="SmellSliderChange();">
+                        <input type="range" name="volume" min="0" max="100" ng-model="value.smell_intesity" ng-change="SmellSliderChange();">
                         <i class="icon ion-plus-round"></i>
                     </div>
                 </div>
@@ -54,7 +55,7 @@
                     <span class="input-label" style="font-weight:bold; width:100%;"><span translate-once="TITLE_BITTER_INTESITY"></span></span>
                     <div class="range">
                         <i class="icon ion-minus-round"></i>
-                        <input type="range" name="volume" min="0" max="1000" ng-model="value.taste_bitter_intesity">
+                        <input type="range" name="volume" min="0" max="100" ng-model="value.taste_bitter_intesity">
                         <i class="icon ion-plus-round"></i>
                     </div>
                 </div>
@@ -62,7 +63,7 @@
                     <span class="input-label" style="font-weight:bold; width:100%;"><span translate-once="TITLE_SPICY_INTESITY"></span></span>
                     <div class="range">
                         <i class="icon ion-minus-round"></i>
-                        <input type="range" name="volume" min="0" max="1000" ng-model="value.taste_spicy_intesity" ng-change="TasteSliderChanged()">
+                        <input type="range" name="volume" min="0" max="100" ng-model="value.taste_spicy_intesity" ng-change="TasteSliderChanged()">
                         <i class="icon ion-plus-round"></i>
                     </div>
                 </div>
@@ -70,7 +71,7 @@
                     <span class="input-label has-input" style="font-weight:bold; width:100%;"><span translate-once="TITLE_GENERAL_OIL_RATE"></span></span>
                     <div class="range">
                         <i class="icon ion-minus-round"></i>
-                        <input type="range" name="volume" min="0" max="1000" ng-model="value.general_rate_intesity">
+                        <input type="range" name="volume" min="0" max="100" ng-model="value.general_rate_intesity">
                         <i class="icon ion-plus-round"></i>
                     </div>
                 </div>
@@ -78,7 +79,7 @@
             <div class="margin-top20" ng-show="GeneralShow && TasteShow" >
                 <ion-grid>
                     <div class="row">
-                        <div class="col"><button ng-disabled="!((green_active == true || mature_active) && value.smell > 0 && value.smell_intesity > 0 && value.taste > 0 && value.taste_bitter_intesity > 0 && value.taste_spicy_intesity > 0 && value.general_rate_intesity > 0)" class="button button-raised button-balanced ink-dark" ng-click="ToResults();" style="float:right;"><span translate-once="BTN_NEXT"></span><i class="icon ion-chevron-right margin-left10"></i></button></div>
+                        <div class="col"><button ng-disabled="!((green_active == true || mature_active) && value.smell.length > 0 && value.smell_intesity > 0 && value.taste > 0 && value.taste_bitter_intesity > 0 && value.taste_spicy_intesity > 0 && value.general_rate_intesity > 0)" class="button button-raised button-balanced ink-dark" ng-click="ToResults();" style="float:right;"><span translate-once="BTN_NEXT"></span><i class="icon ion-chevron-right margin-left10"></i></button></div>
                     </div>
                 </ion-grid>
             </div>

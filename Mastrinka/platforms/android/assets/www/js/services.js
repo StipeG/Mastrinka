@@ -33,8 +33,8 @@
             var val = { };
             
             val = {
-                SampleId: -1, IsMature: false, OverallRating: -1, FlawId: -1, FlawIntensity: -1, TasteId: -1, TasteSpicyIntensity: -1, TasteBitterIntensity: -1,
-                SmellId: -1, SmellIntensity: -1, AppUsefull: -1, AppIntiutive: -1, AppDetail: -1
+                SampleId: null, IsMature: false, OverallRating: null, FlawId: null, FlawIntensity: null, TasteId: null, TasteSpicyIntensity: null, TasteBitterIntensity: null,
+                SmellId: null, SmellIntensity: null, AppUsefull: null, AppIntiutive: null, AppDetail: null
             };
 
             if (flaw_rate_result.sample && flaw_rate_result.sample != null)
@@ -43,16 +43,21 @@
                 val.SampleId = 1;
             if (flaw_rate_result.flaw != null) {
                 val.FlawId = flaw_rate_result.flaw.flaw_id;
-                val.FlawIntensity = flaw_rate_result.flaw.flaw_intesity;
+                val.FlawIntensity = flaw_rate_result.flaw.flaw_intesity / 10;
             }
             else {
                 val.IsMature = flaw_rate_result.rate_result.is_mature;
                 val.TasteId = flaw_rate_result.rate_result.taste;
-                val.TasteBitterIntensity = flaw_rate_result.rate_result.taste_bitter_intesity;
-                val.TasteSpicyIntensity = flaw_rate_result.rate_result.taste_spicy_intesity;
-                val.SmellId = flaw_rate_result.rate_result.smell;
-                val.SmellIntensity = flaw_rate_result.rate_result.smell_intesity;
-                val.OverallRating = flaw_rate_result.rate_result.general_rate_intesity;
+                val.TasteBitterIntensity = flaw_rate_result.rate_result.taste_bitter_intesity / 10;
+                val.TasteSpicyIntensity = flaw_rate_result.rate_result.taste_spicy_intesity / 10;
+
+                var arr = [];
+                for (var i = 0; i < flaw_rate_result.rate_result.length; i++)
+                    arr.push(flaw_rate_result.rate_result.id);
+
+                val.SmellId = arr;
+                val.SmellIntensity = flaw_rate_result.rate_result.smell_intesity / 10;
+                val.OverallRating = flaw_rate_result.rate_result.general_rate_intesity / 10;
             }
 
             val.AppDetail = detail;
@@ -389,11 +394,10 @@
         },
         getTastes: function () {
             var arr = [];
-            arr.push({ id: 1, name: $translate.instant('TASTE_1'), description: '' });
-            arr.push({ id: 2, name: $translate.instant('TASTE_2'), description: '' });
-            arr.push({ id: 3, name: $translate.instant('TASTE_3'), description: '' });
-            arr.push({ id: 4, name: $translate.instant('TASTE_4'), description: '' });
-            arr.push({ id: 5, name: $translate.instant('TASTE_5'), description: '' });
+            arr.push({ id: 1, name: $translate.instant('TASTE_2'), description: '' });
+            arr.push({ id: 2, name: $translate.instant('TASTE_3'), description: '' });
+            arr.push({ id: 3, name: $translate.instant('TASTE_4'), description: '' });
+            arr.push({ id: 4, name: $translate.instant('TASTE_5'), description: '' });
             return arr;
         },
         

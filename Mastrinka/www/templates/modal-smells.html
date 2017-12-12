@@ -1,19 +1,22 @@
 ﻿<ion-modal-view>
     <ion-header-bar class="bar-assertive">
         <div class="buttons buttons-left header-item" ng-click="CloseModalSmells()"> <span class="left-buttons"> <button class="button button-icon button-clear ion-chevron-left"> </button> </span> </div>
-        <div class="h1 title title-left light" translate-once="TITLE_PICK_SMELL_1"></div>
+        <div class="h1 title title-left light" translate-once="TITLE_CHARATERISTICS"></div>
     </ion-header-bar>
     <ion-content has-header="true">
         <ion-list>
-            <ion-radio name="group"
-                       ng-model="value.smell"
+            <ion-checkbox name="group"
                        ng-repeat="item in smells track by $index"
                        ng-value="item.id"
-                       ng-change='newValueModalSmells()'
-                       class="item-text-wrap"
-                       icon="radio-icon ion-checkmark-round balanced">
-                <div id="item{{item.id}}" style="font-weight:bold; width:100%;">{{ item.name }}</div>
-            </ion-radio>
+                       ng-model="item.checked" 
+                       ng-checked="item.checked"
+                       class="item-text-wrap">{{ item.name }}
+            </ion-checkbox>
         </ion-list>
+        <ion-grid>
+            <div class="row">
+                <div class="col center"><button ng-disabled="DisableCloseButtonSmells();" class="button button-raised button-balanced ink-dark" ng-click="CloseModalSmells();"><span translate-once="BTN_CLOSE"></span></button></div>
+            </div>
+        </ion-grid>
     </ion-content>
 </ion-modal-view>

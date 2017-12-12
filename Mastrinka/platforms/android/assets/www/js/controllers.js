@@ -644,11 +644,16 @@
         });
         $scope.mature_active = false;
         $scope.green_active = false;
-        $scope.smells = LocalizationService.getSmells();
+        var smells = LocalizationService.getSmells();
+        $scope.smells = [];
+        for (var i = 0; i < smells.length; i++)
+        {
+            $scope.smells.push({ id: smells[i].id, name: smells[i].name, description: smells[i].description, checked:false })
+        }
         $scope.tastes = LocalizationService.getTastes();
 
         $scope.value = {
-            is_mature: $scope.mature_active, smell: -1, smell_name: '', smell_description: '', smell_intesity: 0,
+            is_mature: $scope.mature_active, smell: [], smell_intesity: 0,
             taste: -1, taste_name: '', taste_description: '', taste_bitter_intesity: 0, taste_spicy_intesity: 0,
             general_rate_intesity: 0
         };
@@ -706,13 +711,36 @@
         $scope.modalSmells.show();
     };
     $scope.CloseModalSmells = function () {
+
+        $scope.value.smell = [];
+
+
+        for(var i = 0; i < $scope.smells.length; i++)
+        {
+            if($scope.smells[i].checked)
+            {
+                $scope.value.smell.push({id:$scope.smells[i].id, name: $scope.smells[i].name, description: $scope.smells[i].desciption });
+            }
+        }
+
         $scope.modalSmells.hide();
+    };
+    $scope.DisableCloseButtonSmells = function ()
+    {
+        for (var i = 0; i < $scope.smells.length; i++) {
+            if ($scope.smells[i].checked) {
+                return false;
+            }
+        }
+        return true;
     };
 
     $scope.ShowModalTaste = function () {
         $scope.modalTastes.show();
     };
     $scope.CloseModalTastes = function () {
+
+
         $scope.modalTastes.hide();
     };
     $scope.newValueModalTastes = function () {
@@ -737,6 +765,13 @@
         $scope.modalSmells.hide();
     };
 
+    $scope.GetSmells = function () {
+        var arrnames = [];
+        for (var i = 0; i < $scope.value.smell.length; i++)
+            arrnames.push($scope.value.smell[i].name);
+        return arrnames.join(',');
+    };
+
     $scope.ToResults = function () {
 
         $ionicLoading.show({
@@ -744,7 +779,7 @@
         });
 
         NativeStoragService.setRateResults({
-            is_mature: $scope.value.is_mature, smell: $scope.value.smell, smell_name: $scope.value.smell_name, smell_description: $scope.value.smell_description, smell_intesity: $scope.value.smell_intesity,
+            is_mature: $scope.value.is_mature, smell: $scope.value.smell, smell_intesity: $scope.value.smell_intesity,
             taste: $scope.value.taste, taste_name: $scope.value.taste_name, taste_description: $scope.value.taste_description, taste_bitter_intesity: $scope.value.taste_bitter_intesity, taste_spicy_intesity: $scope.value.taste_spicy_intesity,
             general_rate_intesity: $scope.value.general_rate_intesity
         }).then(function (value) {
@@ -804,8 +839,11 @@
             if ($scope.rate_result) {
 
                 NativeStoragService.getItem("sample").then(function (value) {
+
+                    //sample.data pr.
+                    //{"Id":4,"SampleId":1,"IsOfficial":1,"IsMature":0,"OverallRating":10,"FlawId":1,"FlawIntensity":10,"TasteId":3,"TasteIntensity":100,"SmellId":5,"SmellIntensity":2}
                     $scope.sample = value;
-                    if ($scope.sample) {
+                    if ($scope.sample && $scope.sample.data) {
 
                         $scope.firstSent = '';
                         if ($scope.rate_result.is_mature)
@@ -813,11 +851,67 @@
                         else
                             $scope.firstSent = $translate.instant('MSG_OIL_FROM_GREEN_OLIVES');
 
-                        $scope.secondSent = $translate.instant('MSG_SMELL_RESULT_SENT').format($scope.rate_result.smell_name.toUpperCase(), (($scope.rate_result.smell_intesity / 1000) * 100).toFixed(2));
+                        var arrnames = [];
+                        for (var i = 0; i < $scope.rate_result.smell.length; i++)
+                            arrnames.push($scope.rate_result.smell[i].name);
+                        var snames = arrnames.join(',');
+
+                        $scope.secondSent = $translate.instant('MSG_SMELL_RESULT_SENT').format(snames.toUpperCase(), (($scope.rate_result.smell_intesity / 10)).toFixed(2));
 
                         $scope.thirdSent = $translate.instant('MSG_TASTE_RESULT_SENT').format($scope.rate_result.taste_name.toUpperCase(),
-                            (($scope.rate_result.taste_bitter_intesity / 1000) * 100).toFixed(2), (($scope.rate_result.taste_spicy_intesity / 1000) * 100).toFixed(2));
-                        $scope.fourthSent = $translate.instant('MSG_GENERAL_RATE_SENT').format((($scope.rate_result.general_rate_intesity / 1000) * 100).toFixed(2));
+                            (($scope.rate_result.taste_bitter_intesity / 10)).toFixed(2), (($scope.rate_result.taste_spicy_intesity / 10)).toFixed(2));
+                        $scope.fourthSent = $translate.instant('MSG_GENERAL_RATE_SENT').format((($scope.rate_result.general_rate_intesity / 10)).toFixed(2));
+
+                        $scope.firstSent_1 = "-";
+                        $scope.secondSent_1 = "-";
+                        $scope.thirdSent_1 = "-";
+                        $scope.fourthSent_1 = "-";
+
+                        $scope.showLower = false;
+                        
+                        if ($scope.sample.data.FlawId && $scope.sample.data.FlawId > 0)
+                        {
+                            if ($scope.sample.data.IsMature || $scope.sample.data.IsMature == 1)
+                                $scope.firstSent_1 = $translate.instant('MSG_OIL_FROM_MATURE_OLIVES');
+                            else
+                                $scope.firstSent_1 = $translate.instant('MSG_OIL_FROM_GREEN_OLIVES');
+
+                            var tastes = LocalizationService.getTastes();
+                            var tName = null;
+                            for (var i = 0; i < tastes.length; i++)
+                            {
+                                if (tastes[i].id == $scope.sample.data.TasteId)
+                                {
+                                    tName = tastes[i].name;
+                                    break;
+                                }
+                            }
+
+                            //triba podesit smells
+                            //triba prominit i tasteintesitiy
+
+                            if (tName) {
+                                $scope.thirdSent_1 = $translate.instant('MSG_TASTE_RESULT_SENT').format(tName.toUpperCase(),
+                            ($scope.sample.data.TasteIntensity).toFixed(2), ($scope.sample.data.TasteIntensity).toFixed(2));
+                            }
+                            $scope.fourthSent_1 = $translate.instant('MSG_GENERAL_RATE_SENT').format((($scope.sample.data.OverallRating)).toFixed(2));
+
+                        }
+                        else
+                        {
+                            var flaw_name = "";
+                            var flaws = LocalizationService.getFlaws();
+                            for (var i = 0; i < flaws.length; i++) {
+                                if (flaws[i].id == $scope.sample.data.FlawId) {
+                                    flaw_name = flaws[i].name;
+                                    break;
+                                }
+                            }
+
+                            $scope.flawsent = $translate.instant('MSG_OIL_HAS_FLAW').format(flaw_name);
+
+                            $scope.showLower = true;
+                        }
 
                         $scope.isInitial = false;
                         $scope.isError = false;

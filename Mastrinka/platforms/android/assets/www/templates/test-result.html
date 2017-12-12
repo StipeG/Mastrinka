@@ -32,28 +32,31 @@
                 <div class="item item-stable item-text-wrap" style="background:#d4d4f7;">
                     <div class="row">
                         <div class="col col-50 center">{{firstSent}}</div>
-                        <div class="col col-50 center">Ulje je od ZRELIH maslina</div>
+                        <div class="col col-50 center">{{firstSent_1}}</div>
                     </div>
                 </div>
                 <div class="item item-stable item-text-wrap" style="background:#e9e9fb;">
                     <div class="row">
                         <div class="col col-50 center">{{secondSent}}</div>
-                        <div class="col col-50 center">Karakteristični miris: ORAŠASTI PLODOVI, intenzitet 58,48%</div>
+                        <div class="col col-50 center">{{secondSent_1}}</div>
                     </div>
                 </div>
                 <div class="item item-stable item-text-wrap" style="background:#d4d4f7;">
                     <div class="row">
                         <div class="col col-50 center">{{thirdSent}}</div>
-                        <div class="col col-50 center">Karakteristični okus: PIKANTNO, intenzitet gorkosti 40%, intenzitet pikantnosti 20%</div>
+                        <div class="col col-50 center">{{thirdSent_1}}</div>
                     </div>
                 </div>
                 <div class="item item-stable item-text-wrap" style="background:#e9e9fb;">
                     <div class="row">
                         <div class="col col-50 center">{{fourthSent}}</div>
-                        <div class="col col-50 center">Opća ocjena ulja: 92</div>
+                        <div class="col col-50 center">{{fourthSent_1}}</div>
                     </div>
                 </div>
             </ion-list>
+            <div class="padTop30" ng-if="showLower == true">
+                <h4 class="padletfright15">{{flawsent}}</h4>
+            </div>
             <div class="margin-top20">
                 <ion-grid>
                     <div class="row">

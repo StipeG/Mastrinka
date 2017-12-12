@@ -31,9 +31,9 @@
                         <span class="input-label" style="width:100%; font-size: 170%;" translate-once="TITLE_USER"></span>
                         <span class="input-label" style="font-weight:bold; width:100%;"><span translate-once="MSG_PICKED_FLAW"></span>{{flaw.flaw_name}}</span>
                         <div class="range range-balanced range-disabled">
-                            <input type="range" name="volume" min="0" max="1000" ng-model="flaw.flaw_intesity" disabled>
+                            <input type="range" name="volume" min="0" max="100" ng-model="flaw.flaw_intesity" disabled>
                         </div>
-                        <span class="input-label center" style="font-weight:bold; width:100%; min-width:100%;"><span translate-once="LBL_INTESITY"></span> {{((flaw.flaw_intesity / 1000) * 100).toFixed(2)}} %</span>
+                        <span class="input-label center" style="font-weight:bold; width:100%; min-width:100%;"><span translate-once="LBL_INTESITY"></span> {{((flaw.flaw_intesity / 10)).toFixed(2)}}</span>
                     </div>
                 </ion-list>
             </div>
@@ -43,9 +43,9 @@
                         <span class="input-label" style="width:100%; font-size: 170%;" translate-once="TITLE_OFFICIAL_RATE"></span>
                         <span class="input-label" style="font-weight:bold; width:100%;"><span translate-once="MSG_PICKED_FLAW"></span>{{server_flaw.name}}</span>
                         <div class="range range-balanced range-disabled">
-                            <input type="range" name="volume" min="0" max="1000" ng-model="server_flaw.intesity" disabled>
+                            <input type="range" name="volume" min="0" max="100" ng-value="server_flaw.intesity * 10" disabled>
                         </div>
-                        <span class="input-label center" style="font-weight:bold; width:100%; min-width:100%;"><span translate-once="LBL_INTESITY"></span> {{((server_flaw.intesity / 1000) * 100).toFixed(2)}} %</span>
+                        <span class="input-label center" style="font-weight:bold; width:100%; min-width:100%;"><span translate-once="LBL_INTESITY"></span> {{(server_flaw.intesity).toFixed(2)}}</span>
                     </div>
                 </ion-list>
             </div>
