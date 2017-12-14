@@ -34,7 +34,7 @@
             
             val = {
                 SampleId: null, IsMature: false, OverallRating: null, FlawId: null, FlawIntensity: null, TasteId: null, TasteSpicyIntensity: null, TasteBitterIntensity: null,
-                SmellId: null, SmellIntensity: null, AppUsefull: null, AppIntiutive: null, AppDetail: null
+                Smell: null, SmellIntensity: null, AppUsefull: null, AppIntiutive: null, AppDetail: null
             };
 
             if (flaw_rate_result.sample && flaw_rate_result.sample != null)
@@ -43,21 +43,21 @@
                 val.SampleId = 1;
             if (flaw_rate_result.flaw != null) {
                 val.FlawId = flaw_rate_result.flaw.flaw_id;
-                val.FlawIntensity = flaw_rate_result.flaw.flaw_intesity / 10;
+                val.FlawIntensity = (flaw_rate_result.flaw.flaw_intesity / 10).toFixed(2);
             }
             else {
                 val.IsMature = flaw_rate_result.rate_result.is_mature;
                 val.TasteId = flaw_rate_result.rate_result.taste;
-                val.TasteBitterIntensity = flaw_rate_result.rate_result.taste_bitter_intesity / 10;
-                val.TasteSpicyIntensity = flaw_rate_result.rate_result.taste_spicy_intesity / 10;
+                val.TasteBitterIntensity = (flaw_rate_result.rate_result.taste_bitter_intesity / 10).toFixed(2);
+                val.TasteSpicyIntensity = (flaw_rate_result.rate_result.taste_spicy_intesity / 10).toFixed(2);
 
                 var arr = [];
                 for (var i = 0; i < flaw_rate_result.rate_result.length; i++)
                     arr.push(flaw_rate_result.rate_result.id);
 
-                val.SmellId = arr;
-                val.SmellIntensity = flaw_rate_result.rate_result.smell_intesity / 10;
-                val.OverallRating = flaw_rate_result.rate_result.general_rate_intesity / 10;
+                val.Smell = arr;
+                val.SmellIntensity = (flaw_rate_result.rate_result.smell_intesity / 10).toFixed(2);
+                val.OverallRating = (flaw_rate_result.rate_result.general_rate_intesity / 10).toFixed(2);
             }
 
             val.AppDetail = detail;
@@ -70,7 +70,7 @@
                 "data": {
                     "SampleId": val.SampleId, "IsMature": val.IsMature, "OverallRating": val.OverallRating, "FlawId": val.FlawId, "FlawIntensity": val.FlawIntensity,
                     "TasteId": val.TasteId, "TasteSpicyIntensity": val.TasteSpicyIntensity, "TasteBitterIntensity": val.TasteBitterIntensity,
-                    "SmellId": val.SmellId, "SmellIntensity": val.SmellIntensity, "AppUsefull": val.AppUsefull, "AppIntiutive": val.AppIntiutive, "AppDetail": val.AppDetail
+                    "Smell": val.Smell, "SmellIntensity": val.SmellIntensity, "AppUsefull": val.AppUsefull, "AppIntiutive": val.AppIntiutive, "AppDetail": val.AppDetail
                 }
             }, {
                 headers: {

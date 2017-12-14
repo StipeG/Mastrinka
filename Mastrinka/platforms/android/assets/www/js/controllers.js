@@ -841,7 +841,7 @@
                 NativeStoragService.getItem("sample").then(function (value) {
 
                     //sample.data pr.
-                    //{"Id":4,"SampleId":1,"IsOfficial":1,"IsMature":0,"OverallRating":10,"FlawId":1,"FlawIntensity":10,"TasteId":3,"TasteIntensity":100,"SmellId":5,"SmellIntensity":2}
+                    //{"SampleId":3,"SampleName":"UMK 33 avr","IsOfficial":1,"IsMature":0,"OverallRating":8.64,"FlawId":null,"FlawIntensity":0,"TasteId":2,"TasteBitterIntensity":6.95,"TasteSpicyIntensity":6.94,"Smells":[5,7,2]}
                     $scope.sample = value;
                     if ($scope.sample && $scope.sample.data) {
 
@@ -869,7 +869,7 @@
 
                         $scope.showLower = false;
                         
-                        if ($scope.sample.data.FlawId && $scope.sample.data.FlawId > 0)
+                        if ($scope.sample.data.FlawId == null || $scope.sample.data.FlawId <= 0)
                         {
                             if ($scope.sample.data.IsMature || $scope.sample.data.IsMature == 1)
                                 $scope.firstSent_1 = $translate.instant('MSG_OIL_FROM_MATURE_OLIVES');
@@ -886,13 +886,29 @@
                                     break;
                                 }
                             }
-
-                            //triba podesit smells
-                            //triba prominit i tasteintesitiy
+                            var smells = LocalizationService.getSmells();
+                            var ssNames = [];
+                            for (var i = 0; i < $scope.sample.data.Smells.length; i++)
+                            {
+                                for (var j = 0; j < smells.length; j++)
+                                {
+                                    if (smells[j].id == $scope.sample.data.Smells[i])
+                                    {
+                                        ssNames.push(smells[j].name);
+                                        break;
+                                    }
+                                }
+                            }
+                            var sJoin = ssNames.join(',');
+                            if (sJoin)
+                            {
+                                $scope.secondSent_1 = $translate.instant('MSG_SMELL_RESULT_SENT').format(sJoin.toUpperCase(), ($scope.sample.data.SmellIntensity).toFixed(2));
+                            }
+                            
 
                             if (tName) {
                                 $scope.thirdSent_1 = $translate.instant('MSG_TASTE_RESULT_SENT').format(tName.toUpperCase(),
-                            ($scope.sample.data.TasteIntensity).toFixed(2), ($scope.sample.data.TasteIntensity).toFixed(2));
+                            ($scope.sample.data.TasteBitterIntensity).toFixed(2), ($scope.sample.data.TasteSpicyIntensity).toFixed(2));
                             }
                             $scope.fourthSent_1 = $translate.instant('MSG_GENERAL_RATE_SENT').format((($scope.sample.data.OverallRating)).toFixed(2));
 
